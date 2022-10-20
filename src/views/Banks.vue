@@ -95,6 +95,11 @@ export default {
       ],
     }
   },
+
+  mounted() {
+    console.log('>>>', process.env.API_URL);
+    console.log('>>>', process.env.SECRET_key);
+  }
 }
 </script>
 
@@ -106,7 +111,7 @@ export default {
   left: 0;
   bottom: 0;
 
-  mask-image: linear-gradient(0deg, rgba(24, 109, 209, 0.9) 10%, transparent 80%);
+  mask-image: linear-gradient(0deg, rgba(24, 109, 209, 0.9) 0%, transparent 100%);
   backdrop-filter: blur(7px);
 }
 </style>
