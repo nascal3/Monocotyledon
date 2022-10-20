@@ -6,14 +6,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    financialInstitutions: []
+    financialInstitutions: null,
+    selectedBank: null,
   },
   getters: {
-    getFinancialInstitutions: state => state.financialInstitutions
+    getFinancialInstitutions: state => state.financialInstitutions,
+    getSelectedBank: state => state.selectedBank
   },
   mutations: {
     setFinancialInstitutions (state, payload) {
       state.financialInstitutions = payload
+    },
+    setSelectedBank (state, payload) {
+      state.selectedBank = payload
     }
   },
   actions: {
@@ -25,6 +30,9 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error)
       }
+    },
+    storeSelectedBank: ({ commit }, payload) => {
+      commit('setSelectedBank', payload)
 
     }
   }

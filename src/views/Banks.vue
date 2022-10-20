@@ -1,6 +1,6 @@
 <template>
   <div id="main-card">
-    <v-card :class="{ blur: dialog }" flat>
+    <v-card :class="{ blur: dialog }" :ripple=false flat>
       <v-card-title>
         <v-btn class="mr-1" icon small>
           <v-icon small>mdi-arrow-left</v-icon>
@@ -98,11 +98,13 @@ export default {
 
   methods: {
     ...mapActions({
-      fetchFinancialInstitutions: 'fetchFinancialInstitutions'
+      fetchFinancialInstitutions: 'fetchFinancialInstitutions',
+      setSelectedBank: 'storeSelectedBank'
     }),
 
     selectBank(selectedBank) {
       this.selectedBank = selectedBank
+      this.setSelectedBank(selectedBank)
       this.dialog = true
     },
 
@@ -130,6 +132,11 @@ export default {
 }
 #main-card {
   margin-bottom: 5px;
+  background: linear-gradient(0deg, rgba(24, 109, 209, 0.9) 0%, rgba(24, 44, 209, 0.9) 100%);
+
+  .v-ripple__container {
+    display:none !important;
+  }
 
   .blur {
     ::before {
@@ -141,7 +148,6 @@ export default {
       width: 100%;
       height: 100%;
       backdrop-filter: blur(1px);
-      z-index: 1;
     }
   }
 
