@@ -1,9 +1,11 @@
 <template>
-  <div id="app">
-    <v-main ma-0 pa-0 fluid>
-      <router-view/>
-    </v-main>
-  </div>
+  <v-app>
+    <div id="app">
+      <v-main ma-0 pa-0 fluid>
+        <router-view/>
+      </v-main>
+    </div>
+  </v-app>
 </template>
 
 <style lang="scss">

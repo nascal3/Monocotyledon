@@ -1,4 +1,3 @@
-import store from '@/store'
 
 /**
  * Add request interceptor to axios
@@ -32,7 +31,6 @@ const addResponseInterceptor = (api) => {
     return response
   }, (error) => {
     if (tokenObj && error.response && (error.response.status === 401 || error.response.status === 400)) {
-      store.dispatch('auth/removeToken')
       window.location.reload()
     }
     return Promise.reject(error)

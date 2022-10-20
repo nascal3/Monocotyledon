@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <v-card id="main-card" flat>
+  <div id="main-card">
+    <v-card :class="{ blur: dialog }" flat>
       <v-card-title>
-        <v-btn class="mr-3" icon small>
+        <v-btn class="mr-1" icon small>
           <v-icon small>mdi-arrow-left</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <span class="title">Select your financial institution</span>
         <v-spacer></v-spacer>
-        <v-btn class="ml-3" icon small>
+        <v-btn class="ml-1" icon small>
           <v-icon small>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -34,7 +34,11 @@
               md="6"
               cols="6"
           >
-            <v-card class="institution" min-height="90">
+            <v-card
+                class="institution"
+                min-height="90"
+                @click.stop="selectBank(institution)"
+            >
               <v-img
                   :src="institution.icon"
                   max-width="50px"
@@ -48,21 +52,35 @@
     </v-card>
 
     <div class="bottom"></div>
+
+    <v-dialog
+        id="bank-dialog"
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+        @click:outside="closeDialog"
+    >
+      <bank-modal :bank-details="selectedBank" />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import BankModal from "@/components/BankModal";
 import { mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'HomeView',
   components: {
-    // HelloWorld
+    BankModal
   },
 
   data() {
     return {
-      cards: [],
+      loading: true,
+      dialog: false,
+      selectedBank: null
     }
   },
 
@@ -72,10 +90,25 @@ export default {
     })
   },
 
+  watch: {
+    selectedBank(newValue) {
+      if (!newValue) this.dialog = false
+    }
+  },
+
   methods: {
     ...mapActions({
       fetchFinancialInstitutions: 'fetchFinancialInstitutions'
-    })
+    }),
+
+    selectBank(selectedBank) {
+      this.selectedBank = selectedBank
+      this.dialog = true
+    },
+
+    closeDialog() {
+      this.dialog = false
+    }
   },
 
   mounted() {
@@ -84,28 +117,35 @@ export default {
 }
 </script>
 
-<style scoped>
-.institution {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.bottom {
-  position: fixed;
-  height: 60px;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-
-  mask-image: linear-gradient(0deg, rgba(24, 109, 209, 0.9) 0%, transparent 100%);
-  backdrop-filter: blur(7px);
-}
-</style>
-
 <style lang="scss">
+.v-dialog__content {
+  top: 50%;
+}
+
+.v-dialog--fullscreen {
+  top: 50% !important;
+  border-radius: 25px;
+  position: fixed;
+  overflow-y: auto;
+}
 #main-card {
   margin-bottom: 5px;
-  &.v-card {
+
+  .blur {
+    ::before {
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(1px);
+      z-index: 1;
+    }
+  }
+
+  .v-card {
     background: transparent;
 
     .v-card__title {
@@ -122,11 +162,17 @@ export default {
         }
       }
       .v-input__icon {
-        margin-right: 5px;
         .v-icon {
           font-size: 30px !important;
         }
       }
+    }
+
+    .institution.v-card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #FFFFFF;
     }
 
     .title {
@@ -134,6 +180,17 @@ export default {
       font-size: 20px;
       color: #ffffff;
     }
+  }
+
+  .bottom {
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+
+    mask-image: linear-gradient(0deg, rgba(24, 109, 209, 0.9) 0%, transparent 100%);
+    backdrop-filter: blur(7px);
   }
 }
 
