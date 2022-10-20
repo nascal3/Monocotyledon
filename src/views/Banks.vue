@@ -28,37 +28,19 @@
       <v-container fluid>
         <v-row class="pb-7">
           <v-col
-              v-for="(card, index) in cards"
+              v-for="(institution, index) in financialInstitutions"
               :key="index"
               lg="3"
               md="6"
               cols="6"
           >
-            <v-card>
+            <v-card class="institution" min-height="90">
               <v-img
-                  :src="card.src"
-                  class="white--text align-end"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                  height="200px"
+                  :src="institution.icon"
+                  max-width="50px"
+                  max-height="50px"
               >
-                <v-card-title v-text="card.title"></v-card-title>
               </v-img>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn icon>
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-
-                <v-btn icon>
-                  <v-icon>mdi-bookmark</v-icon>
-                </v-btn>
-
-                <v-btn icon>
-                  <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
-              </v-card-actions>
             </v-card>
           </v-col>
         </v-row>
@@ -70,6 +52,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'HomeView',
@@ -79,31 +62,34 @@ export default {
 
   data() {
     return {
-      cards: [
-        { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-      ],
+      cards: [],
     }
   },
 
+  computed: {
+    ...mapGetters({
+      financialInstitutions: 'getFinancialInstitutions'
+    })
+  },
+
+  methods: {
+    ...mapActions({
+      fetchFinancialInstitutions: 'fetchFinancialInstitutions'
+    })
+  },
+
   mounted() {
-    console.log('>>>', process.env.API_URL);
-    console.log('>>>', process.env.SECRET_key);
+    this.fetchFinancialInstitutions()
   }
 }
 </script>
 
 <style scoped>
+.institution {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .bottom {
   position: fixed;
   height: 60px;
@@ -120,7 +106,6 @@ export default {
 #main-card {
   margin-bottom: 5px;
   &.v-card {
-    border-radius: 0;
     background: transparent;
 
     .v-card__title {
