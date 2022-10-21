@@ -105,6 +105,7 @@ export default {
     selectBank(selectedBank) {
       this.selectedBank = selectedBank
       this.setSelectedBank(selectedBank)
+      localStorage.setItem('selectedBank', JSON.stringify(selectedBank))
       this.dialog = true
     },
 
@@ -114,7 +115,12 @@ export default {
   },
 
   mounted() {
-    this.fetchFinancialInstitutions()
+    this.fetchFinancialInstitutions().then(() =>{
+      this.loading = false
+    }).catch(err => {
+      this.loading = false
+      this.$toast.error(err.response.data.message)
+    })
   }
 }
 </script>
@@ -132,24 +138,25 @@ export default {
 }
 #main-card {
   margin-bottom: 5px;
+  min-height: 100vh;
   background: linear-gradient(0deg, rgba(24, 109, 209, 0.9) 0%, rgba(24, 44, 209, 0.9) 100%);
 
   .v-ripple__container {
     display:none !important;
   }
 
-  .blur {
-    ::before {
-      position: absolute;
-      content: "";
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(1px);
-    }
-  }
+  //.blur {
+  //  ::before {
+  //    position: absolute;
+  //    content: "";
+  //    top: 0;
+  //    left: 0;
+  //    bottom: 0;
+  //    width: 100%;
+  //    height: 100%;
+  //    backdrop-filter: blur(1px);
+  //  }
+  //}
 
   .v-card {
     background: transparent;

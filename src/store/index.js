@@ -29,11 +29,31 @@ export default new Vuex.Store({
         commit('setFinancialInstitutions', response.data)
       } catch (error) {
         console.log(error)
+        throw error
       }
     },
     storeSelectedBank: ({ commit }, payload) => {
       commit('setSelectedBank', payload)
-
-    }
+    },
+    // eslint-disable-next-line no-unused-vars
+    createSession: async ({ commit }, payload) => {
+      const url = '/connect/session'
+      try {
+        const response = await api.post(url, payload)
+        console.log('ses', response.data)
+      } catch (error) {
+        console.error(error)
+        throw error
+      }
+    },
+    login: async ({ commit }) => {
+      const url = '/institutions'
+      try {
+        const response = await api.post(url)
+        commit('setFinancialInstitutions', response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    },
   }
 })

@@ -7,7 +7,8 @@ import * as interceptor from './interceptors'
  */
 const commonHeaders = {
   Accept: 'application/json',
-  'Content-Type': 'application/json'
+  'Content-Type': 'application/json',
+  'mono-sec-key': process.env.SECRET_key
 }
 
 const api = axios.create({
