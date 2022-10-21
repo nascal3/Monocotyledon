@@ -1,12 +1,12 @@
 <template>
- <div>
-   success
- </div>
+   <div>
+    success
+   </div>
 </template>
 
 <script>
 export default {
-  name: "Success"
+  name: "SuccessConnect"
 }
 </script>
 

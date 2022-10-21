@@ -21,7 +21,7 @@ const routes = [
   {
     path: '/success',
     name: 'success',
-    component: () => import('@/views/Success.vue'),
+    component: () => import('@/views/SuccessConnect.vue'),
     beforeEnter: checkAuth
   }
 ]
