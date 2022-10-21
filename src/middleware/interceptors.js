@@ -6,11 +6,10 @@
  */
 const addRequestInterceptor = (api) => {
   return api.interceptors.request.use((config) => {
-    const tokenVals = localStorage.getItem('monoAuthToken')
-    const tokenObj = JSON.parse(tokenVals)
-    if (tokenObj) {
+    const sessionID = localStorage.getItem('session-id')
+    if (sessionID) {
       config.headers = {
-        Authorization: `${tokenObj.token}`
+        'x-session-id': sessionID
       }
     }
     return config
@@ -25,12 +24,11 @@ const addRequestInterceptor = (api) => {
  * @param  {Object} api axios base configs
  */
 const addResponseInterceptor = (api) => {
-  const tokenVals = localStorage.getItem('monoAuthToken')
-  const tokenObj = JSON.parse(tokenVals)
+  const sessionID = localStorage.getItem('session-id')
   return api.interceptors.response.use((response) => {
     return response
   }, (error) => {
-    if (tokenObj && error.response && (error.response.status === 401 || error.response.status === 400)) {
+    if (sessionID && error.response && (error.response.status === 401 || error.response.status === 400)) {
       window.location.reload()
     }
     return Promise.reject(error)

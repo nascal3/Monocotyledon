@@ -40,20 +40,22 @@ export default new Vuex.Store({
       const url = '/connect/session'
       try {
         const response = await api.post(url, payload)
-        console.log('ses', response.data)
+        localStorage.setItem('session-id', response.data.id)
       } catch (error) {
         console.error(error)
         throw error
       }
     },
-    login: async ({ commit }) => {
-      const url = '/institutions'
+    // eslint-disable-next-line no-unused-vars
+    login: async ({ commit }, payload) => {
+      const url = '/connect/login'
       try {
-        const response = await api.post(url)
-        commit('setFinancialInstitutions', response.data)
+        const response = await api.post(url, payload)
+        localStorage.setItem('loggedInCode', response.data.code)
       } catch (error) {
         console.log(error)
+        throw error
       }
-    },
+    }
   }
 })

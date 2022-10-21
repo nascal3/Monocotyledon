@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { mapGetters} from 'vuex'
+import { mapGetters, mapActions} from 'vuex'
 
 export default {
   name: "ConnectBank",
@@ -104,11 +104,29 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loginSession: 'login'
+    }),
+
     navigateBack() {
       this.$router.push('/')
     },
 
-    login() {
+    async login() {
+      this.loading = true
+      const payload = {
+        username: this.userID,
+        password: this.password
+      }
+
+      try {
+        await this.loginSession(payload)
+        this.loading = false
+      } catch (error) {
+        this.loading = false
+        console.error(error.response.data)
+        this.$toast.error(error.response.data.message)
+      }
 
     }
   },
