@@ -51,7 +51,7 @@ export default new Vuex.Store({
       const url = '/connect/login'
       try {
         const response = await api.post(url, payload)
-        localStorage.setItem('loggedInCode', response.data.code)
+        localStorage.setItem('accounts', response.data)
       } catch (error) {
         console.log(error)
         throw error

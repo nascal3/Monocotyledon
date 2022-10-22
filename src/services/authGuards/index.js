@@ -27,9 +27,9 @@ const checkConnectSession = (to, from, next) => {
  * @return {void}
  */
 const checkAuth = (to, from, next) => {
-  const loggedInCode = localStorage.getItem('loggedInCode')
+  const accounts = localStorage.getItem('accounts')
   const sessionId = localStorage.getItem('session-id')
-  if (sessionId && loggedInCode) {
+  if (sessionId && accounts) {
     next()
     return
   }

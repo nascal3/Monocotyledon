@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import BankModal from "@/components/BankModal";
+import BankModal from "@/components/banks/BankModal";
 import { mapGetters, mapActions} from 'vuex'
 
 export default {
@@ -145,18 +145,18 @@ export default {
     display:none !important;
   }
 
-  //.blur {
-  //  ::before {
-  //    position: absolute;
-  //    content: "";
-  //    top: 0;
-  //    left: 0;
-  //    bottom: 0;
-  //    width: 100%;
-  //    height: 100%;
-  //    backdrop-filter: blur(1px);
-  //  }
-  //}
+  .blur {
+    ::before {
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(1px);
+    }
+  }
 
   .v-card {
     background: transparent;

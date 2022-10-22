@@ -19,54 +19,15 @@
       </v-card-title>
 
       <v-card-text class="pa-0">
-        <div class="title mb-5 d-flex justify-center">Log  in</div>
+        <div class="title mb-5 d-flex flex-column align-center">
+          {{ isLoggedIn ? 'Choose Account' : 'Log in' }}
+          <div v-if="isLoggedIn">Please select an account to continue</div>
+        </div>
 
-        <div class="login-section pa-10">
-          <v-form ref="form" v-model="valid" @submit.prevent="login">
-            <v-row no-gutters>
-              <v-col cols="12" md="12">
-                <v-text-field
-                    v-model="userID"
-                    label="User ID"
-                    name="userID"
-                    outlined
-                    :rules="[rules.userIDRequired]"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="12">
-                <v-text-field
-                    v-model="password"
-                    label="Password"
-                    name="password"
-                    type="password"
-                    outlined
-                    :rules="[rules.passwordRequired]"
-                ></v-text-field>
+        <div class="content-section pa-10">
+          <select-account v-if="isLoggedIn" />
 
-              </v-col>
-              <v-col cols="12" md="12">
-                <v-btn
-                    x-large
-                    depressed
-                    type="submit"
-                    :disabled="loading"
-                    color="primary"
-                    class="btn-style"
-                    block
-                >
-                  {{ loading ? 'Linking Account' : 'Link Account'}}
-                  <v-progress-circular
-                      v-if="loading"
-                      :width="3"
-                      :size="20"
-                      color="#FFFFFF"
-                      class="ml-2"
-                      indeterminate
-                  ></v-progress-circular>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
+          <connection-auth v-else/>
         </div>
       </v-card-text>
     </v-card>
@@ -74,22 +35,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions} from 'vuex'
+import { mapGetters } from 'vuex'
+import ConnectionAuth from "@/components/connection/ConnectionAuthForm";
+import SelectAccount from "@/components/connection/SelectAccount";
 
 export default {
   name: "ConnectBank",
 
+  components: {
+    ConnectionAuth,
+    SelectAccount
+  },
+
   data() {
     return {
-      loading: false,
       institution: null,
-      valid: false,
-      userID: null,
-      password: null,
-      rules: {
-        userIDRequired: value => !!value || 'User ID is required',
-        passwordRequired: value => !!value || 'Password is required'
-      }
     }
   },
 
@@ -98,36 +58,19 @@ export default {
       selectedBank: 'getSelectedBank'
     }),
 
+    isLoggedIn() {
+      return  localStorage.getItem('loggedInCode')
+    },
+
     initialized() {
       return Object.keys(this.institution).length > 0
     }
   },
 
   methods: {
-    ...mapActions({
-      loginSession: 'login'
-    }),
-
     navigateBack() {
+      localStorage.clear()
       this.$router.push('/')
-    },
-
-    async login() {
-      this.loading = true
-      const payload = {
-        username: this.userID,
-        password: this.password
-      }
-
-      try {
-        await this.loginSession(payload)
-        this.loading = false
-      } catch (error) {
-        this.loading = false
-        console.error(error.response.data)
-        this.$toast.error(error.response.data.message)
-      }
-
     }
   },
 
@@ -154,23 +97,16 @@ export default {
         font-weight: 500;
         font-size: 20px;
         color: #55586F;
+
+        div {
+          font-size: 13px;
+        }
       }
 
-      .login-section {
+      .content-section {
         background: linear-gradient(180deg, rgba(217, 79, 0, 0.175) 0%, rgba(217, 79, 0, 0.075) 100%), #FFFFFF;
         height: 100vh;
 
-        form {
-          .v-input__slot {
-            background: rgba(255, 255, 255, 0.65);
-          }
-          .v-btn {
-            border-radius: 10px;
-            &__content {
-              text-transform: none;
-            }
-          }
-        }
       }
     }
   }

@@ -109,7 +109,7 @@ export default {
         await this.createSession(payload)
         await this.$router.push('/connect')
       } catch (error) {
-        console.error(error.response.data)
+        console.error(error)
         this.$toast.error('No connection available at this moment')
       }
 
