@@ -1,4 +1,4 @@
-# Mono Cycle
+# Monocotyledon
 Prototype bank account linking and data access.
 
 ## Project setup
