@@ -1,8 +1,15 @@
-# mono
+# Mono Cycle
 
 ## Project setup
 ```
 npm install
+```
+
+### Setup environment variables
+Create in root directory a file named _.env.local_. Add the following variables in it.
+```
+API_URL=https://api.withmono.com/v1
+SECRET_key=test_sk_nH6wu8IPQdwzjQJM50bi
 ```
 
 ### Compiles and hot-reloads for development
