@@ -110,7 +110,7 @@ export default {
         await this.$router.push('/connect')
       } catch (error) {
         console.error(error)
-        this.$toast.error('No connection available at this moment')
+        this.$toast.error('Bank connection ID does not exist!')
       }
 
     }

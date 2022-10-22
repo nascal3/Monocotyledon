@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import { checkAuth, checkConnectSession } from '@/services/authGuards'
+import { checkAuth, checkConnectSession } from '@/services/authGuards'
 
 Vue.use(VueRouter)
 
@@ -15,14 +15,14 @@ const routes = [
     path: '/connect',
     name: 'connect',
     component: () => import('@/views/ConnectBank.vue'),
-    // beforeEnter: checkConnectSession
+    beforeEnter: checkConnectSession
   },
 
   {
     path: '/success',
     name: 'success',
     component: () => import('@/views/SuccessConnect.vue'),
-    // beforeEnter: checkAuth
+    beforeEnter: checkAuth
   }
 ]
 
